@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style type="text/css">
+      canvas { border: 1px solid black; }
+    </style>
+</head>
+
+<body>
+
+
+
+
+
+
+
+<script type="text/javascript">
+
+//Constructor function for Droid objects	  
+	  function Droid(xPos, yPos)
+{
+	//Properties
+	this.xPos = xPos;
+	this.yPos = yPos;
+	this.speed = 1;
+	this.direction = 0;
+	var topBound = 0
+	var leftBound = 0
+	var rightBound = 490
+	var bottomBound = 490
+	
+	
+	//movement methods
+
+	
+	this.moveUp = function(){
+				//this.xPos--;
+				this.yPos -= this.speed;
+	};
+	this.moveUpLeft = function(){
+				this.xPos -= this.speed;
+				this.yPos -= this.speed;
+	};	
+	this.moveUpRight = function(){
+				this.xPos += this.speed;
+				this.yPos -= this.speed;
+	};	
+	this.moveDown = function(){
+				//this.xPos--;
+				this.yPos += this.speed;
+	};
+	this.moveDownRight = function(){
+				this.xPos += this.speed;
+				this.yPos += this.speed;
+	};
+	this.moveDownLeft = function(){
+				this.xPos -= this.speed;
+				this.yPos += this.speed;
+	};		
+	this.moveLeft = function(){
+				this.xPos -= this.speed;
+				//this.yPos++;
+	};
+	this.moveRight = function(){
+				this.xPos += this.speed;
+				//this.yPos++;
+	};
+
+	//Decision-making methods
+	
+	this.pickDirection = function(){
+	
+			this.direction = Math.floor(Math.random()*8);
+		
+	};
+	
+	this.executeMove = function(){
+	
+		if (this.direction == 0 && this.yPos == topBound || 
+			this.direction == 6 && this.yPos == topBound ||
+			this.direction == 7 && this.yPos == topBound ||
+	
+			this.direction == 1 && this.xPos == leftBound ||
+			this.direction == 4 && this.xPos == leftBound ||
+			this.direction == 6 && this.xPos == leftBound ||			
+		
+			this.direction == 2 && this.xPos == rightBound || 
+			this.direction == 5 && this.xPos == rightBound ||
+			this.direction == 7 && this.xPos == rightBound ||
+			
+			this.direction == 3 && this.yPos == bottomBound ||
+			this.direction == 4 && this.yPos == bottomBound ||
+			this.direction == 5 && this.yPos == bottomBound
+			)
+			{
+			
+			
+			
+			this.pickDirection();
+		}
+
+		else {
+		
+		switch (this.direction)
+		{
+		case 0:
+		this.moveUp();
+		break;
+		case 1:
+		this.moveLeft();
+		break;
+		case 2:
+		this.moveRight();
+		break;
+		case 3:
+		this.moveDown();
+		break;
+		case 4:
+		this.moveDownLeft();
+		break;
+		case 5:
+		this.moveDownRight();
+		break;		
+		case 6:
+		this.moveUpLeft();
+		break;
+		case 7:
+		this.moveUpRight();
+		break;		
+		}
+	
+		}
+	};
+	
+	
+	
+} //end of Droid class declaration
+
+
+//Function to draw the canvas
+
+      function draw(){
+        var canvas = document.getElementById('canvas');
+        if (canvas.getContext){
+          var ctx = canvas.getContext('2d');
+		  
+		ctx.clearRect(0,0,500,500); // clear canvas
+		ctx.fillStyle = "rgb(200,0,0)";
+        
+		ctx.fillRect (droid1.xPos, droid1.yPos, 10, 10);
+		ctx.fillRect (droid2.xPos, droid2.yPos, 10, 10);
+		ctx.fillRect (droid3.xPos, droid3.yPos, 10, 10);
+		
+		document.getElementById("xOutput").innerHTML="X: "; //updates the x-y co-ords readout.
+		document.getElementById("yOutput").innerHTML="Y: " + droid1.yPos;
+		document.getElementById("direction").innerHTML="Direction: " + droid1.direction;
+
+
+        }
+      };
+	  
+	  
+
+
+	
+//function called by the setInterval method to check for keystrokes and update the object co-ord properties
+function enviroUpdate()
+	{
+		//agent activity
+
+		droid1.executeMove();
+		droid2.executeMove();
+		droid3.executeMove();
+		
+		
+		//environment actions
+		
+		draw();
+	};
+	
+
+//==============================================================================================end of function setup===============================================================================================
+
+
+//Declare an instance of the Droid object
+var droid1 = new Droid(250, 250);
+var droid2 = new Droid(100, 100);
+var droid3 = new Droid(350, 350);
+
+//have the droid set it's starting direction.
+droid1.pickDirection();
+droid2.pickDirection();
+droid3.pickDirection();
+
+//set environmental boundaries
+
+
+
+
+//Fire up the loop
+var myVar = setInterval(function(){enviroUpdate()},10);
+	  
+	  
+	  
+ </script>
+
+<canvas id="canvas" width="500" height="500"></canvas>
+
+<h2 id="xOutput"></h2>
+<h2 id="yOutput"></h2>
+<h2 id="direction"></h2>
+
+
+</body>
+</html>
